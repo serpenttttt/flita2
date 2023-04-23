@@ -31,26 +31,20 @@ matrix = arr.transpose()
 print(matrix)
 
 # Добавляем ребра
-set_edges = set()
+set_edges = []
 for string_of_nodes in matrix:
+    one_node = True
     for i in range(len(string_of_nodes)):
-        for j in range(len(string_of_nodes)):
-            if j < len(string_of_nodes):
-                if (j + 1) < len(string_of_nodes) and string_of_nodes[i] == string_of_nodes[j + 1] == '1' and i + 1 != j + 2:
-                    set_edges.add(str(i+1) + str(j+2))
-                else:
-                    count = 0
-                    for k in string_of_nodes:
-                        if k == '1':
-                            count = count + 1
-                    if string_of_nodes[j] == '1' and count == 1:
-                        set_edges.add(str(j + 1) + str(j + 1))
-
-print(list(set_edges))
+        for j in range(i + 1, len(string_of_nodes)):
+            if string_of_nodes[i] == string_of_nodes[j] == '1':
+                set_edges.append(str(i+1) + str(j+1))
+                one_node = False
+    if one_node:
+        for i in range(len(string_of_nodes)):
+            if string_of_nodes[i] == '1':
+                set_edges.append(str(i+1) + str(i+1))
 
 dot.edges(list(set_edges))
-
-print(dot.source)
 
 # Выводим пользователю граф
 dot.render('doctest-output/round-table.gv', view=True)
